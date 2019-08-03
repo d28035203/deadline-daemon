@@ -1,0 +1,11 @@
+body {
+  font-family: "Segoe UI", sans-serif;
+  max-width: 480px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+  background: #1a1a2e;
+  color: #eee;
+}
+h1 { color: #ff6b6b; }
+li { margin: 0.4rem 0; }
+#mood { margin-top: 1.5rem; font-style: italic; color: #ffd93d; }
