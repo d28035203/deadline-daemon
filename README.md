@@ -1,8 +1,8 @@
 # Final Year Panic
 
-A **deadline countdown** and panic checklist for final-year project season — **project season**.
+A **deadline countdown** and panic checklist for project season.
 
-Set your submission date. Watch time evaporate. Tick boxes. Cry professionally.
+Set a submission date. Watch time evaporate. Tick boxes. Ship something.
 
 Open `index.html`.
 
