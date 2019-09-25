@@ -1,9 +1,15 @@
 # Deadline Daemon
 
-**** Software project phase — planning under pressure.
+Countdown to a deadline plus a checklist stored in `localStorage`.
 
-Countdown to a deadline plus a checklist that sticks in `localStorage`.
+## Run
 
-Open `index.html`.
+```bash
+open index.html
+```
 
-MIT · practice project
+Set a datetime, add tasks, check them off. State survives refresh.
+
+## License
+
+MIT

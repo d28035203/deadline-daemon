@@ -1,18 +1,67 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
- <meta charset="utf-8" />
- <title>Deadline Daemon</title>
- <link rel="stylesheet" href="style.css" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Deadline Daemon</title>
+  <style>
+    body { font-family:system-ui,sans-serif; background:#0e1116; color:#e8eaed; max-width:560px; margin:2rem auto; padding:0 1rem; }
+    input, button { background:#1a2030; color:#fff; border:1px solid #333a4a; border-radius:6px; padding:0.45rem 0.6rem; }
+    button { cursor:pointer; }
+    #countdown { font-size:1.6rem; margin:1rem 0; font-variant-numeric:tabular-nums; }
+    li { display:flex; gap:0.5rem; align-items:center; margin:0.35rem 0; }
+    li.done span { text-decoration:line-through; color:#888; }
+  </style>
 </head>
 <body>
- <h1>Deadline Daemon</h1>
- <p>Days until external: <strong id="days">?</strong></p>
- <label>Deadline (YYYY-MM-DD):
- <input id="deadline" type="date" value="2019-12-15" />
- </label>
- <ul id="list"></ul>
- <p id="mood"></p>
- <script src="daemon.js"></script>
+  <h1>Deadline Daemon</h1>
+  <p>Countdown to a deadline plus a checklist that persists in <code>localStorage</code>.</p>
+  <label>Deadline <input type="datetime-local" id="dl" /></label>
+  <div id="countdown">Set a deadline…</div>
+  <form id="f" class="row">
+    <input id="item" placeholder="Add checklist item" style="width:70%" />
+    <button type="submit">Add</button>
+  </form>
+  <ul id="list"></ul>
+  <script>
+    const KEY = 'deadline-daemon-v1';
+    const state = JSON.parse(localStorage.getItem(KEY) || '{"deadline":"","items":[]}');
+    const dl = document.getElementById('dl');
+    const list = document.getElementById('list');
+    const countdown = document.getElementById('countdown');
+    if (state.deadline) dl.value = state.deadline;
+    function save(){ localStorage.setItem(KEY, JSON.stringify(state)); }
+    function renderList(){
+      list.innerHTML = '';
+      state.items.forEach((it, idx) => {
+        const li = document.createElement('li');
+        if (it.done) li.className = 'done';
+        const cb = document.createElement('input'); cb.type='checkbox'; cb.checked=!!it.done;
+        cb.onchange = () => { it.done = cb.checked; save(); renderList(); };
+        const sp = document.createElement('span'); sp.textContent = it.text;
+        const rm = document.createElement('button'); rm.textContent='×'; rm.onclick=()=>{ state.items.splice(idx,1); save(); renderList(); };
+        li.append(cb, sp, rm); list.appendChild(li);
+      });
+    }
+    function tick(){
+      if (!state.deadline) { countdown.textContent = 'Set a deadline…'; return; }
+      const ms = new Date(state.deadline).getTime() - Date.now();
+      if (isNaN(ms)) { countdown.textContent = 'Invalid deadline'; return; }
+      if (ms <= 0) { countdown.textContent = 'Deadline reached'; return; }
+      const s = Math.floor(ms/1000);
+      const d = Math.floor(s/86400), h = Math.floor((s%86400)/3600), m = Math.floor((s%3600)/60), sec = s%60;
+      countdown.textContent = `${d}d ${h}h ${m}m ${sec}s remaining`;
+    }
+    dl.onchange = () => { state.deadline = dl.value; save(); tick(); };
+    document.getElementById('f').onsubmit = (e) => {
+      e.preventDefault();
+      const text = document.getElementById('item').value.trim();
+      if (!text) return;
+      state.items.push({ text, done: false });
+      document.getElementById('item').value = '';
+      save(); renderList();
+    };
+    renderList(); tick(); setInterval(tick, 1000);
+  </script>
 </body>
 </html>
