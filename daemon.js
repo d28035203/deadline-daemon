@@ -1,5 +1,5 @@
 /**
- * panic.js — final year project countdown (2019)
+ * panic.js — deadline project countdown (2019)
  */
 (function () {
  var TASKS = [
@@ -12,7 +12,7 @@
  ];
 
  var list = document.getElementById("list");
- var saved = JSON.parse(localStorage.getItem("fyp_checks") || "{}");
+ var saved = JSON.parse(localStorage.getItem("deadline_checks") || "{}");
 
  TASKS.forEach(function (t, i) {
  var li = document.createElement("li");
@@ -24,7 +24,7 @@
  list.appendChild(li);
  li.querySelector("input").addEventListener("change", function (e) {
  saved[id] = e.target.checked;
- localStorage.setItem("fyp_checks", JSON.stringify(saved));
+ localStorage.setItem("deadline_checks", JSON.stringify(saved));
  mood();
  });
  });

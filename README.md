@@ -1,9 +1,9 @@
-# Final Year Panic
+# Deadline Daemon
 
-A **deadline countdown** and panic checklist for project season.
+**Subject vibe:** Software project phase — planning under pressure.
 
-Set a submission date. Watch time evaporate. Tick boxes. Ship something.
+Countdown to a deadline plus a checklist that sticks in `localStorage`.
 
 Open `index.html`.
 
-MIT · 2019
+MIT · practice project
